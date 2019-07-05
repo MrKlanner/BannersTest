@@ -2,10 +2,20 @@ package ru.rbc.kskabort;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.graph.Network;
+import com.google.common.graph.NetworkBuilder;
+import jdk.net.NetworkPermission;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.mobile.NetworkConnection;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.Command;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeSuite;
@@ -23,9 +33,14 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 
 import ru.rbc.kskabort.Banners.*;
 import ru.rbc.kskabort.TabActions.*;
+import sun.net.NetworkClient;
 
+import javax.xml.ws.Response;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BannersTest {
     private static final int NumOfWindows = 2;
@@ -38,17 +53,26 @@ public class BannersTest {
     private static WebDriver firefox_2;*/
 
     @BeforeSuite (description = "setup", alwaysRun = true)
-    public static void setup() {
+    public static void setup() throws IOException {
         System.setProperty ("webdriver.chrome.driver", "C:/Users/kskabort/Documents/webdrivers/chrome_driver/chromedriver.exe");
         System.setProperty("webdriver.firefox.marionette","C:/Users/kskabort/Documents/webdrivers/geckodriver-v0.24.0-win64/geckodriver.exe");
-        chrome_1 = new ChromeDriver();
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(CapabilityType.SUPPORTS_NETWORK_CONNECTION,true);
+        capabilities.setCapability("network_connection",1);
+        chrome_1 = new ChromeDriver(capabilities);
+        chrome_1.manage().window().maximize();
         chrome_2 = new ChromeDriver();
+        chrome_2.manage().window().maximize();
+       /* networkThrotting(chrome_1);*/
+/*        Map<String, Object> prefs = new HashMap<String, Object>();
+        prefs.put("profile.default_content_settings.popups", 0);
+        options.setExperimentalOption("prefs", prefs);*/
+        /*((ChromeDriver) chrome_1).setNetworkConnection(t)*/
+/*        networkThrotting(chrome_2);*/
 /*        chrome_3 = new ChromeDriver();
         chrome_4 = new ChromeDriver();
         chrome_5 = new ChromeDriver();*/
 /*        firefox_1 = new FirefoxDriver();*/
-        chrome_1.manage().window().maximize();
-        chrome_2.manage().window().maximize();
 /*        chrome_3.manage().window().maximize();
         chrome_4.manage().window().maximize();
         chrome_5.manage().window().maximize();*/
@@ -100,6 +124,18 @@ public class BannersTest {
             driver.switchTo().window(tab.get(0));
             tab.remove(1);
         }
+    }
+
+    protected static void networkThrotting(WebDriver driver) throws IOException {
+        Map map = new HashMap();
+        map.put("offline", false);
+        map.put("latency", 5);
+        map.put("download_throughput", 500);
+        map.put("upload_throughput", 1024);
+        CommandExecutor executor = ((ChromeDriver)driver).getCommandExecutor();
+        Response response = (Response) executor.execute(
+                new Command(((ChromeDriver)driver).getSessionId(),    "setNetworkConditions", ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map)))
+        );
     }
 
 }
