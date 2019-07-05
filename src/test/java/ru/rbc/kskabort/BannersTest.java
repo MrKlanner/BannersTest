@@ -58,7 +58,7 @@ public class BannersTest {
         System.setProperty("webdriver.firefox.marionette","C:/Users/kskabort/Documents/webdrivers/geckodriver-v0.24.0-win64/geckodriver.exe");
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(CapabilityType.SUPPORTS_NETWORK_CONNECTION,true);
-        capabilities.setCapability("network_connection",1);
+        capabilities.setCapability("network_connection","1"); //пока ничего не делает...
         chrome_1 = new ChromeDriver(capabilities);
         chrome_1.manage().window().maximize();
         chrome_2 = new ChromeDriver();
