@@ -11,19 +11,17 @@ package ru.rbc.kskabort;
  *     .build()
  *     .perform(); */
 
-import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import org.openqa.selenium.WebDriver;
 
 public class TabActions {
-
+    public static WebDriver driver;
 /*
     private static Actions actions = new Actions(getWebDriver());
     private static Robot robot;
@@ -38,7 +36,7 @@ public class TabActions {
 */
 
     public static void PressEscape() {
-        Actions actions = new Actions(getWebDriver());
+        Actions actions = new Actions(driver);
         {
             actions.sendKeys(Keys.ESCAPE)
                     .release()
@@ -84,6 +82,20 @@ public class TabActions {
         robot.keyRelease(KeyEvent.VK_F4);
     }
 
+    static void SwitchToLast(int NumOfWindows) throws InterruptedException, AWTException {
+        Robot robot = new Robot();
+        //(JavascriptExecutor)getWebDriver()).executeScript("window.close()");
+        //sleep(500);
+        robot.keyPress(KeyEvent.VK_ALT);
+        Thread.sleep(500);
+        for (int i=0; i<NumOfWindows-1; i++) {
+            robot.keyPress(KeyEvent.VK_TAB);
+            Thread.sleep(500);
+        }
+        robot.keyRelease(KeyEvent.VK_ALT);
+        robot.keyRelease(KeyEvent.VK_TAB);
+    }
+
 /*    static void Open_in_new_tab() throws AWTException, InterruptedException
     {
         Robot robot = new Robot();
@@ -95,9 +107,4 @@ public class TabActions {
         robot.keyRelease(KeyEvent.VK_CONTROL);
     }*/
 
-    static void Mose_move(SelenideElement elem) throws AWTException {
-        Robot robot = new Robot();
-        Point coordinates = $(elem).getLocation();
-        robot.mouseMove(coordinates.getX(), coordinates.getY() + 120);
-    }
 }
