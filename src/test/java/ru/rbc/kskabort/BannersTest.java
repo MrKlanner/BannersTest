@@ -56,10 +56,7 @@ public class BannersTest {
     public static void setup() throws IOException {
         System.setProperty ("webdriver.chrome.driver", "C:/Users/kskabort/Documents/webdrivers/chrome_driver/chromedriver.exe");
         System.setProperty("webdriver.firefox.marionette","C:/Users/kskabort/Documents/webdrivers/geckodriver-v0.24.0-win64/geckodriver.exe");
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        capabilities.setCapability(CapabilityType.SUPPORTS_NETWORK_CONNECTION,true);
-        capabilities.setCapability("network_connection","1"); //пока ничего не делает...
-        chrome_1 = new ChromeDriver(capabilities);
+        chrome_1 = new ChromeDriver();
         chrome_1.manage().window().maximize();
         chrome_2 = new ChromeDriver();
         chrome_2.manage().window().maximize();
@@ -97,8 +94,8 @@ public class BannersTest {
 /*            firefox_1.get(url);
             firefox_2.get(url);*/
             if (i<50){
-                chrome_1.findElement(By.cssSelector(Banners.Billboard)).click();
-                chrome_2.findElement(By.cssSelector(Banners.Billboard)).click();
+                chrome_1.findElement(By.cssSelector(Banners.FirstRight)).click();
+                chrome_2.findElement(By.cssSelector(Banners.FirstRight)).click();
 /*                chrome_3.findElement(By.cssSelector(Banners.Billboard)).click();
                 chrome_4.findElement(By.cssSelector(Banners.Billboard)).click();
                 chrome_5.findElement(By.cssSelector(Banners.Billboard)).click();
