@@ -105,9 +105,7 @@ public class BannersTest {
                 CloseOneRight(chrome_2);
             }
             sleep(1000);
-/*            CloseOneRight(chrome_3);
-            CloseOneRight(chrome_4);
-            CloseOneRight(chrome_5);*/
+
         }
     }
 
