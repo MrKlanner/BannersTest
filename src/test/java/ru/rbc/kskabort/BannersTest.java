@@ -1,49 +1,29 @@
 package ru.rbc.kskabort;
 
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.SelenideElement;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.graph.Network;
-import com.google.common.graph.NetworkBuilder;
-import jdk.net.NetworkPermission;
+import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.mobile.NetworkConnection;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.Command;
-import org.openqa.selenium.remote.CommandExecutor;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+import com.google.common.base.Stopwatch;
 
-import static com.codeborne.selenide.Browsers.CHROME;
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.*;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 
-import ru.rbc.kskabort.Banners.*;
-import ru.rbc.kskabort.TabActions.*;
-import sun.net.NetworkClient;
-
-import javax.xml.ws.Response;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BannersTest {
     private static final int NumOfWindows = 2;
+    private static final String stand_url = "https://feature-rbcadt-1319-auto-ctr.stands.v10.rbcnews.rbc.ru/";
+    private static final String url = "https://rbc.ru";
+
+    private static StopWatch stopwatch = new StopWatch();
+    private static ArrayList<WebDriver> drivers = new ArrayList<>(3);
+
     private static WebDriver chrome_1;
     private static WebDriver chrome_2;
 /*    private static WebDriver chrome_3;
@@ -53,60 +33,47 @@ public class BannersTest {
     private static WebDriver firefox_2;*/
 
     @BeforeSuite (description = "setup", alwaysRun = true)
-    public static void setup() throws IOException {
+    public static void setup() throws IOException, AWTException {
         System.setProperty ("webdriver.chrome.driver", "C:/Users/kskabort/Documents/webdrivers/chrome_driver/chromedriver.exe");
-        System.setProperty("webdriver.firefox.marionette","C:/Users/kskabort/Documents/webdrivers/geckodriver-v0.24.0-win64/geckodriver.exe");
+        //System.setProperty("webdriver.firefox.marionette","C:/Users/kskabort/Documents/webdrivers/geckodriver-v0.24.0-win64/geckodriver.exe");
         chrome_1 = new ChromeDriver();
         chrome_1.manage().window().maximize();
+        TabActions.WindowSwap("left");
         chrome_2 = new ChromeDriver();
         chrome_2.manage().window().maximize();
-       /* networkThrotting(chrome_1);*/
-/*        Map<String, Object> prefs = new HashMap<String, Object>();
-        prefs.put("profile.default_content_settings.popups", 0);
-        options.setExperimentalOption("prefs", prefs);*/
-        /*((ChromeDriver) chrome_1).setNetworkConnection(t)*/
-/*        networkThrotting(chrome_2);*/
-/*        chrome_3 = new ChromeDriver();
-        chrome_4 = new ChromeDriver();
-        chrome_5 = new ChromeDriver();*/
-/*        firefox_1 = new FirefoxDriver();*/
-/*        chrome_3.manage().window().maximize();
-        chrome_4.manage().window().maximize();
-        chrome_5.manage().window().maximize();*/
-/*        firefox_1.manage().window().maximize();*/
-/*        firefox_1.get("");
-        firefox_2.get("");*/
-        /*Configuration.browser = CHROME;
-        Configuration.reopenBrowserOnFail = true;
-        Configuration.startMaximized = true;*/
     }
 
     @Test
     public static void test1() throws AWTException, InterruptedException {
-        String url = "https://rbc.ru";
-        for (int i=0; i<100; i++) {
+        for (int i = 0; i < 100; i++) {
             chrome_1.get(url);
+            stopwatch.start(); //старт таймера
+            setWebDriver(chrome_1);
+            $(Banners.FirstRight).waitUntil(visible, 30000);
+            System.out.println("Ну чтож нашли мы его, попался родненький!" + "\nВремя: " + stopwatch.getTime() + '\n');
+            stopwatch.stop();
+
             chrome_2.get(url);
-/*            chrome_3.get(url);
-            chrome_4.get(url);
-            chrome_5.get(url);*/
+            stopwatch.start(); //старт таймера
+            setWebDriver(chrome_2);
+            $(Banners.FirstRight).waitUntil(visible, 30000);
+            System.out.println("Ну чтож нашли мы его, СНОВА, попался родненький!" + "\nВремя: " + stopwatch.getTime() + '\n');
+            stopwatch.stop();
+
             sleep(2000);
-/*            firefox_1.get(url);
-            firefox_2.get(url);*/
-            if (i<50){
-                chrome_1.findElement(By.cssSelector(Banners.FirstRight)).click();
-                chrome_2.findElement(By.cssSelector(Banners.FirstRight)).click();
-/*                chrome_3.findElement(By.cssSelector(Banners.Billboard)).click();
-                chrome_4.findElement(By.cssSelector(Banners.Billboard)).click();
-                chrome_5.findElement(By.cssSelector(Banners.Billboard)).click();
-                firefox_1.findElement(By.cssSelector(Banners.Billboard)).click();
-                firefox_2.findElement(By.cssSelector(Banners.Billboard)).click();*/
-                CloseOneRight(chrome_1);
-                CloseOneRight(chrome_2);
-            }
+            chrome_1.findElement(By.cssSelector(Banners.FirstRight)).click();
+            chrome_2.findElement(By.cssSelector(Banners.FirstRight)).click();
+            CloseOneRight(chrome_1);
+            CloseOneRight(chrome_2);
             sleep(1000);
 
         }
+    }
+
+    @AfterSuite
+    public static void end() {
+        chrome_1.quit();
+        chrome_2.quit();
     }
 
     private static void CloseOneRight(WebDriver driver) throws AWTException, InterruptedException
@@ -121,7 +88,7 @@ public class BannersTest {
         }
     }
 
-    protected static void networkThrotting(WebDriver driver) throws IOException {
+    /*protected static void networkThrotting(WebDriver driver) throws IOException {
         Map map = new HashMap();
         map.put("offline", false);
         map.put("latency", 5);
@@ -131,6 +98,6 @@ public class BannersTest {
         Response response = (Response) executor.execute(
                 new Command(((ChromeDriver)driver).getSessionId(),    "setNetworkConditions", ImmutableMap.of("network_conditions", ImmutableMap.copyOf(map)))
         );
-    }
+    }*/
 
 }

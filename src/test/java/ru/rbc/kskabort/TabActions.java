@@ -96,6 +96,26 @@ public class TabActions {
         robot.keyRelease(KeyEvent.VK_TAB);
     }
 
+    static void WindowSwap(String direction) throws AWTException {
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_WINDOWS);
+        if (direction.equals("left")) {
+            for (int i = 0; i < 3; i++) {
+                robot.keyPress(KeyEvent.VK_LEFT);
+                robot.keyRelease(KeyEvent.VK_LEFT);
+            }
+        }
+        else if (direction.equals("right")) {
+            for (int i = 0; i < 3; i++) {
+                robot.keyPress(KeyEvent.VK_RIGHT);
+                robot.keyRelease(KeyEvent.VK_RIGHT);
+            }
+        }
+        robot.keyPress(KeyEvent.VK_UP);
+        robot.keyRelease(KeyEvent.VK_UP);
+        robot.keyRelease(KeyEvent.VK_WINDOWS);
+    }
+
 /*    static void Open_in_new_tab() throws AWTException, InterruptedException
     {
         Robot robot = new Robot();
