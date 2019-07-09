@@ -68,8 +68,8 @@ public class BannersTest {
                 {System.out.print(c.toString() + '\n');}
 
             //System.out.println("Ну чтож нашли мы его, СНОВА, попался родненький!");
-            try {chrome_1.findElement(By.cssSelector(Banners.FirstRight)).click();
-                chrome_2.findElement(By.cssSelector(Banners.FirstRight)).click();}
+            try {chrome_1.findElement(By.cssSelector(Banners.FirstRightFrame)).click();
+                chrome_2.findElement(By.cssSelector(Banners.FirstRightFrame)).click();}
             catch (Exception c1)
             {System.out.print(c1.toString() + '\n');}
             CloseOneRight(chrome_1);
