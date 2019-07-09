@@ -36,7 +36,7 @@ public class BannersTest {
 
     @BeforeSuite (description = "setup", alwaysRun = true)
     public static void setup() throws IOException, AWTException, InterruptedException {
-        System.setProperty ("webdriver.chrome.driver", "C:/Users/kskabort/Documents/webdrivers/chrome_driver/chromedriver.exe");
+        System.setProperty ("webdriver.chrome.driver", "C:/Users/pvcs/Documents/webdrivers/chrome_driver/chromedriver.exe");
         //System.setProperty("webdriver.firefox.marionette","C:/Users/kskabort/Documents/webdrivers/geckodriver-v0.24.0-win64/geckodriver.exe");
         chrome_1 = new ChromeDriver();
         chrome_1.manage().window().maximize();
@@ -47,8 +47,8 @@ public class BannersTest {
 
     @Test (priority = 0)
     public static void Desktop() throws AWTException, InterruptedException {
-        for (int i = 0; i < 100; i++) {
-            chrome_1.get(url);
+        for (int i = 0; i < 300; i++) {
+            chrome_1.get(stand_url);
             TabActions.PressEscape(chrome_1);
             //js1.executeScript("RA.repo.banner.addEventListener('creativeShow', function(){ document.querySelector(\"body > div.container > iframe\")).click;}, 'right_1', null, 'dfp')");
             setWebDriver(chrome_1);
@@ -60,18 +60,18 @@ public class BannersTest {
             }
             //System.out.println("Ну чтож нашли мы его, попался родненький!"+"\n"+js_out);
 
-            chrome_2.get(url);
+            chrome_2.get(stand_url);
             setWebDriver(chrome_2);
             $(Banners.FirstRightFrame).waitUntil(visible, 30000);
             try {Assert.assertEquals($(Banners.FirstRightFrame).isDisplayed(),true);}
             catch (AssertionError c)
-            {
-                System.out.println(c);
-            }
+                {System.out.print(c.toString() + '\n');}
 
             //System.out.println("Ну чтож нашли мы его, СНОВА, попался родненький!");
-            chrome_1.findElement(By.cssSelector(Banners.FirstRight)).click();
-            chrome_2.findElement(By.cssSelector(Banners.FirstRight)).click();
+            try {chrome_1.findElement(By.cssSelector(Banners.FirstRight)).click();
+                chrome_2.findElement(By.cssSelector(Banners.FirstRight)).click();}
+            catch (Exception c1)
+            {System.out.print(c1.toString() + '\n');}
             CloseOneRight(chrome_1);
             CloseOneRight(chrome_2);
             sleep(1000);
