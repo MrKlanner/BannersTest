@@ -21,10 +21,8 @@ public class BannersTest {
     private static WebDriver chrome_1;
     private static WebDriver chrome_2;
     private static final int NumOfWindows = 2;
-    private static final String stand_url = "https://feature-rbcadt-1319-auto-ctr.stands.v10.rbcnews.rbc.ru/";
-    //private static final String url = "https://rbc.ru";
-    //private static JavascriptExecutor js1 = (JavascriptExecutor)chrome_1;
-    //JavascriptExecutor js2 = (JavascriptExecutor)chrome_2;
+    //private static final String stand_url = "https://feature-rbcadt-1319-auto-ctr.stands.v10.rbcnews.rbc.ru/";
+    private static final String url = "https://rbc.ru";
 
 
     /*    private static StopWatch stopwatch = new StopWatch();
@@ -32,22 +30,26 @@ public class BannersTest {
     Creating the JavascriptExecutor interface object by Type casting*/
 
     @BeforeSuite (description = "setup", alwaysRun = true)
-    public static void setup(){
-        System.setProperty ("webdriver.chrome.driver", "C:/Users/pvcs/Documents/webdrivers/chrome_driver/chromedriver.exe");
+    public static void setup() throws InterruptedException, AWTException {
+        System.setProperty ("webdriver.chrome.driver", "C:/Users/kskabort/Documents/webdrivers/chrome_driver/chromedriver.exe");
         //System.setProperty("webdriver.firefox.marionette","C:/Users/kskabort/Documents/webdrivers/geckodriver-v0.24.0-win64/geckodriver.exe");
         chrome_1 = new ChromeDriver();
         chrome_1.manage().window().maximize();
-        //TabActions.WindowSwap("left");
+        TabActions.WindowSwap("left");
         chrome_2 = new ChromeDriver();
         chrome_2.manage().window().maximize();
     }
 
     @Test
     public static void Desktop() throws AWTException, InterruptedException {
-        for (int i = 0; i < 300; i++) {
-            chrome_1.get(stand_url);
+/*        JavascriptExecutor js1 = (JavascriptExecutor)chrome_1;
+        JavascriptExecutor js2 = (JavascriptExecutor)chrome_1;*/
+        int num_of_tests = 300;
+        for (int i = 0; i < num_of_tests /2; i++) {
+            
+            chrome_1.get(url);
             TabActions.PressEscape(chrome_1);
-            //js1.executeScript("RA.repo.banner.addEventListener('creativeShow', function(){ document.querySelector(\"body > div.container > iframe\")).click;}, 'right_1', null, 'dfp')");
+            /*js1.executeScript("testcafe \"chrome:d:\\chrome_portable\\chrome.exe:emulation:device=iphone X\" tests/test.js");*/
             setWebDriver(chrome_1);
             $(Banners.FirstRightFrame).waitUntil(visible, 30000);
             try {Assert.assertTrue($(Banners.FirstRightFrame).isDisplayed());}
@@ -55,32 +57,27 @@ public class BannersTest {
             {
                 System.out.println(c.toString());
             }
-            //System.out.println("Ну чтож нашли мы его, попался родненький!"+"\n"+js_out);
 
-            chrome_2.get(stand_url);
+            chrome_2.get(url);
             setWebDriver(chrome_2);
             $(Banners.FirstRightFrame).waitUntil(visible, 30000);
             try {Assert.assertTrue($(Banners.FirstRightFrame).isDisplayed());}
             catch (AssertionError c)
                 {System.out.print(c.toString() + '\n');}
 
-            //System.out.println("Ну чтож нашли мы его, СНОВА, попался родненький!");
+            //Отлов не кликабельности элемента
             try {chrome_1.findElement(By.cssSelector(Banners.FirstRightFrame)).click();
                 chrome_2.findElement(By.cssSelector(Banners.FirstRightFrame)).click();}
-            catch (Exception c1)
-            {System.out.print(c1.toString() + '\n');}
+            catch (Exception c1) {
+                $(Banners.BillboardFrame).waitUntil(hidden, 10000);
+                System.out.print(c1.toString() + '\n');
+            }
             CloseOneRight(chrome_1);
             CloseOneRight(chrome_2);
             sleep(1000);
 
         }
     }
-
-    /*@Test ()
-    public static void Tablet()
-    {
-         DesiredCapabilities Cap_for_tab = new DesiredCapabilities();
-    }*/
 
     @AfterTest
     public static void end() {
