@@ -35,8 +35,8 @@ public class TabActions {
     }
 */
 
-    public static void PressEscape() {
-        Actions actions = new Actions(driver);
+    static void PressEscape(WebDriver driver1){
+        Actions actions = new Actions(driver1);
         {
             actions.sendKeys(Keys.ESCAPE)
                     .release()
@@ -96,13 +96,14 @@ public class TabActions {
         robot.keyRelease(KeyEvent.VK_TAB);
     }
 
-    static void WindowSwap(String direction) throws AWTException {
+    static void WindowSwap(String direction) throws AWTException, InterruptedException {
         Robot robot = new Robot();
         robot.keyPress(KeyEvent.VK_WINDOWS);
         if (direction.equals("left")) {
             for (int i = 0; i < 3; i++) {
                 robot.keyPress(KeyEvent.VK_LEFT);
                 robot.keyRelease(KeyEvent.VK_LEFT);
+                Thread.sleep(500);
             }
         }
         else if (direction.equals("right")) {
