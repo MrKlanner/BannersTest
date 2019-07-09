@@ -1,12 +1,10 @@
 package ru.rbc.kskabort;
 
-import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+//import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.*;
-import com.google.common.base.Stopwatch;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -15,9 +13,8 @@ import static com.codeborne.selenide.WebDriverRunner.*;
 import org.openqa.selenium.WebDriver;
 
 import java.awt.*;
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class BannersTest {
 
@@ -25,9 +22,9 @@ public class BannersTest {
     private static WebDriver chrome_2;
     private static final int NumOfWindows = 2;
     private static final String stand_url = "https://feature-rbcadt-1319-auto-ctr.stands.v10.rbcnews.rbc.ru/";
-    private static final String url = "https://rbc.ru";
-    private static JavascriptExecutor js1 = (JavascriptExecutor)chrome_1;
-    JavascriptExecutor js2 = (JavascriptExecutor)chrome_2;
+    //private static final String url = "https://rbc.ru";
+    //private static JavascriptExecutor js1 = (JavascriptExecutor)chrome_1;
+    //JavascriptExecutor js2 = (JavascriptExecutor)chrome_2;
 
 
     /*    private static StopWatch stopwatch = new StopWatch();
@@ -35,7 +32,7 @@ public class BannersTest {
     Creating the JavascriptExecutor interface object by Type casting*/
 
     @BeforeSuite (description = "setup", alwaysRun = true)
-    public static void setup() throws IOException, AWTException, InterruptedException {
+    public static void setup(){
         System.setProperty ("webdriver.chrome.driver", "C:/Users/pvcs/Documents/webdrivers/chrome_driver/chromedriver.exe");
         //System.setProperty("webdriver.firefox.marionette","C:/Users/kskabort/Documents/webdrivers/geckodriver-v0.24.0-win64/geckodriver.exe");
         chrome_1 = new ChromeDriver();
@@ -45,7 +42,7 @@ public class BannersTest {
         chrome_2.manage().window().maximize();
     }
 
-    @Test (priority = 0)
+    @Test
     public static void Desktop() throws AWTException, InterruptedException {
         for (int i = 0; i < 300; i++) {
             chrome_1.get(stand_url);
@@ -53,17 +50,17 @@ public class BannersTest {
             //js1.executeScript("RA.repo.banner.addEventListener('creativeShow', function(){ document.querySelector(\"body > div.container > iframe\")).click;}, 'right_1', null, 'dfp')");
             setWebDriver(chrome_1);
             $(Banners.FirstRightFrame).waitUntil(visible, 30000);
-            try {Assert.assertEquals($(Banners.FirstRightFrame).isDisplayed(), true);}
+            try {Assert.assertTrue($(Banners.FirstRightFrame).isDisplayed());}
             catch (AssertionError c)
             {
-                System.out.println(c);
+                System.out.println(c.toString());
             }
             //System.out.println("Ну чтож нашли мы его, попался родненький!"+"\n"+js_out);
 
             chrome_2.get(stand_url);
             setWebDriver(chrome_2);
             $(Banners.FirstRightFrame).waitUntil(visible, 30000);
-            try {Assert.assertEquals($(Banners.FirstRightFrame).isDisplayed(),true);}
+            try {Assert.assertTrue($(Banners.FirstRightFrame).isDisplayed());}
             catch (AssertionError c)
                 {System.out.print(c.toString() + '\n');}
 
