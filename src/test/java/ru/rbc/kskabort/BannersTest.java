@@ -2,7 +2,7 @@ package ru.rbc.kskabort;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-//import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -76,11 +76,16 @@ public class BannersTest {
         }
     }
 
-    /*@Test ()
+    @Test ()
     public static void Tablet()
     {
-         DesiredCapabilities Cap_for_tab = new DesiredCapabilities();
-    }*/
+        DesiredCapabilities cap_for_tab = new DesiredCapabilities();
+        cap_for_tab.setCapability("deviceName", ""); // device UID from adb
+        cap_for_tab.setCapability("platformVersion", "6.0.1"); // android version
+        cap_for_tab.setCapability("platformName", "Android");
+        cap_for_tab.setCapability("appPackage", "com.code44.finance"); // package name
+        cap_for_tab.setCapability("appWaitActivity", "com.code44.finance.*"); // default activity
+    }
 
     @AfterTest
     public static void end() {
