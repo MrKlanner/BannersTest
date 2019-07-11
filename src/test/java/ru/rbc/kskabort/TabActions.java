@@ -35,14 +35,18 @@ public class TabActions {
     }
 */
 
-    static void PressEscape(WebDriver driver1){
-        Actions actions = new Actions(driver1);
+    static void PressEscape(WebDriver driver1) throws AWTException, InterruptedException {
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_ESCAPE);
+        Thread.sleep(500);
+        robot.keyRelease(KeyEvent.VK_ESCAPE);
+/*        Actions actions = new Actions(driver1);
         {
             actions.sendKeys(Keys.ESCAPE)
                     .release()
                     .build()
                     .perform();
-        }
+        }*/
     }
 
     static void New() throws InterruptedException, AWTException {

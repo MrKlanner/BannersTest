@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="default">
+
+    <test name="Regression1">
+    <classes>
+        <class name="ru.rbc.kskabort.BannersTest"/>
+    </classes>
+    </test>
+    <listeners>
+        <listener class-name="ScreenshotListener" />
+    </listeners>
+    <test name="Test">
+        <packages>
+            <package name="BannersTest"/>
+        </packages>
+    </test>
+</suite>
